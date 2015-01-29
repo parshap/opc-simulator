@@ -1,0 +1,36 @@
+{
+  "name": "opc-simulator",
+  "version": "0.0.0",
+  "description": "Web-based Open Pixel Control simulator",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:parshap/opc-simulator.git"
+  },
+  "keywords": [
+    "opc"
+  ],
+  "author": "Parsha Pourkhomami",
+  "license": "Public Domain",
+  "bugs": {
+    "url": "https://github.com/parshap/opc-simulator/issues"
+  },
+  "homepage": "https://github.com/parshap/opc-simulator",
+  "dependencies": {
+    "base64-stream": "^0.1.2",
+    "brfs": "^1.2.0",
+    "browserify": "^8.1.1",
+    "duplexer2": "0.0.2",
+    "insert-css": "^0.2.0",
+    "opc": "^1.1.0",
+    "react": "^0.12.2",
+    "reconnect-core": "^0.2.1",
+    "shoe": "0.0.15",
+    "stream-buffer": "^1.0.0",
+    "through2": "^0.6.3"
+  }
+}
