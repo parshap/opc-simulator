@@ -14,10 +14,10 @@ var UI = React.createClass({
     var children = [];
     var pixels = this.props.pixels;
     if (pixels) {
-      var strand = createStrand(pixels.length / 3, pixels);
+      var strand = createStrand(pixels);
       for (var i = 0; i < strand.length; i++) {
         children.push(el(Pixel, {
-          color: strand.getColor(i),
+          color: strand.getPixel(i),
         }));
       }
     }
