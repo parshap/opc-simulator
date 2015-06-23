@@ -4,7 +4,7 @@
   "description": "Web-based Open Pixel Control simulator",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tape test.js",
     "start": "node server.js"
   },
   "repository": {
@@ -21,16 +21,18 @@
   },
   "homepage": "https://github.com/parshap/opc-simulator",
   "dependencies": {
-    "base64-stream": "^0.1.2",
     "brfs": "^1.2.0",
     "browserify": "^8.1.1",
-    "duplexer2": "0.0.2",
     "insert-css": "^0.2.0",
     "opc": "^1.1.2",
     "react": "^0.12.2",
     "reconnect-core": "^0.2.1",
-    "shoe": "0.0.15",
     "stream-buffer": "^1.0.0",
-    "through2": "^0.6.3"
+    "through2": "^0.6.3",
+    "websocket-stream": "^1.5.0"
+  },
+  "devDependencies": {
+    "getport": "^0.1.0",
+    "tape": "^4.0.0"
   }
 }

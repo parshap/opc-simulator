@@ -1,14 +1,10 @@
 "use strict";
 
 var through = require("through2");
-var duplexer = require("duplexer2");
-var shoe = require("shoe");
 var http = require("http");
+var createWebsocketServer = require("websocket-stream/server");
 var browserify = require("browserify");
 var buffer = require("stream-buffer");
-var createOPCParser = require("opc/parser");
-var createOPCStream = require("opc");
-var base64 = require("base64-stream");
 
 var b = browserify(__dirname + "/websocket-client.js");
 b.transform(require("brfs"));
@@ -32,17 +28,11 @@ function sendBundle(req, res) {
   });
 }
 
-module.exports = function(options) {
+module.exports = function(createEffectStream, options) {
+  options = options || {};
   var server = http.createServer(handler);
-  var parser = createOPCParser().resume();
-  shoe({}, function(stream) {
-    var opc = createOPCStream();
-    opc.pipe(base64.encode()).pipe(stream);
-    parser.on("data", function(message) {
-      opc.writeMessage(message.channel, message.command, message.data);
-    });
-  }).install(server, "/opc");
-
-  server.listen(options.port || 8080);
-  return duplexer(parser, through());
+  createWebsocketServer({ server: server }, function(stream) {
+    createEffectStream().pipe(stream);
+  });
+  return server;
 };
