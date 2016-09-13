@@ -5,6 +5,8 @@ var http = require("http");
 var createWebsocketServer = require("websocket-stream/server");
 var browserify = require("browserify");
 var buffer = require("stream-buffer");
+var createOPCStream = require("opc");
+var createOPCParser = require("opc/parser");
 
 var b = browserify(__dirname + "/websocket-client.js");
 b.transform(require("brfs"));
@@ -28,11 +30,29 @@ function sendBundle(req, res) {
   });
 }
 
-module.exports = function(createEffectStream, options) {
-  options = options || {};
+module.exports = function(opcStream) {
+  var currentPixelData = null;
+  opcStream
+    .pipe(createOPCParser())
+    .on("data", function(message) {
+      if (message.command === 0) {
+        currentPixelData = message.data;
+      }
+    });
   var server = http.createServer(handler);
-  createWebsocketServer({ server: server }, function(stream) {
-    createEffectStream().pipe(stream);
+  createWebsocketServer({ server: server }, function(socket) {
+    if (currentPixelData != null) {
+      var newStream = createOPCStream();
+      newStream.pipe(socket);
+      newStream.writePixels(0, currentPixelData);
+    }
+    opcStream.pipe(socket);
+    socket.on("close", function() {
+      opcStream.unpipe(socket);
+      if (newStream) {
+        newStream.unpipe(socket);
+      }
+    });
   });
   return server;
 };
