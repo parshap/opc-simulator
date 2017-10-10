@@ -2,7 +2,7 @@
 
 var through = require("through2");
 var http = require("http");
-var createWebsocketServer = require("websocket-stream/server");
+var createWebsocketServer = require("websocket-stream/server").createServer;
 var browserify = require("browserify");
 var buffer = require("stream-buffer");
 var createOPCStream = require("opc");
@@ -30,7 +30,8 @@ function sendBundle(req, res) {
   });
 }
 
-module.exports = function(opcStream) {
+module.exports = function(createEffectStream) {
+  const opcStream = createEffectStream()
   var currentPixelData = null;
   opcStream
     .pipe(createOPCParser())
